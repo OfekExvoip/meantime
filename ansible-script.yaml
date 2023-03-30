@@ -1,0 +1,30 @@
+- hosts: all
+  become: true
+  tasks:
+  - name: Install git
+    command: apt install git -y
+    become: true
+    become_method: sudo
+    become_user: root
+
+  - name: Set git config user.name
+    command: git config --global user.name "OfekExvoip"
+    become_user: root
+
+  - name: Set git config user.email
+    command: git config --global user.email "ofek@exvoip.com"
+    become_user: root
+
+  - name: Clone setup-scripts repository
+    command: git clone https://github.com/OfekExvoip/pbxrepo.git
+    become_user: root
+
+  - name: Change file permissions and run script
+    shell: |
+      cd /home/ubuntu/pbxrepo/
+      touch starting.txt
+      chmod a+x pbx
+      ./pbx
+
+    become_user: root
+
